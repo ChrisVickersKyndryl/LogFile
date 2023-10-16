@@ -32,14 +32,14 @@
         dest: "/tmp/Result/{{ ansible_hostname }}.txt"
         content: |
           <tr>
-            <td>Ansible Server Name</td>
-            <td>Server Name (In OS)</td>
-            <td>C Drive Space</td>
-            <td>C Drive Space Remaining </td>
-            <td>Log File Size</td>
-            <td>Logs (MB) Per Day</td>
-            <td>Days stored</td>
-            <td>Report Time (seconds)</td>
+            <th>{{ ansible_hostname }}</th>
+            <th>{{ log_info.Hostname }}</th>
+            <th>{{ log_info.Drive.SizeGB }}</th>
+            <th>{{ log_info.Drive.SpaceRemainingGB }}</th>
+            <th></th>
+            <th>log_info.Logs.TotalLogPerDayGB</th>
+            <th>log_info.Logs.DaysOfLogsStored</th>
+            <th>log_info.ReportDate</th>
           </tr>
       when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
       delegate_to: localhost
@@ -70,6 +70,10 @@
       loop: "{{ text_files.files }}"
       run_once: true
       delegate_to: localhost
+
+    # Debug for testing
+    - debug:
+        msg: "{{ lookup('file', '/tmp/Result/Summary.htm') }}"
       
     # Email report
     #- name: Email information
@@ -85,9 +89,14 @@
     #        <h2>Log file summary</h2>
     #        <table>
     #          <tr>
-    #            <th>Server</th>
-    #            <th>C Drive Free Space</th>
-    #            <th>Country</th>
+    #            <td>Ansible Server Name</td>
+    #            <td>Server Name (In OS)</td>
+    #            <td>C Drive Size</td>
+    #            <td>C Drive Space Remaining </td>
+    #            <td>Log File Size</td>
+    #            <td>Logs (MB) Per Day</td>
+    #            <td>Days stored</td>
+    #            <td>Report Time (seconds)</td>
     #          </tr>
     #          {{ lookup('file', '/tmp/Result/Summary.htm') }}
     #        </table>
