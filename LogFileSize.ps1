@@ -34,9 +34,10 @@ $job = Start-Job -ScriptBlock {
                 EarliestLogFormatted = $firstSecurityLog.TimeCreated.ToUniversalTime().toString("r")
             }      
         }
-        #Drive
+        #Drive information
         Drive = @{
             Size = $volume.Size
+            SizeRemaining = $volume.Size/1GB
             SpaceRemaining = $volume.SizeRemaining
             SpaceRemainingGB = $volume.SizeRemaining/1GB
         }
@@ -61,7 +62,7 @@ $job = Start-Job -ScriptBlock {
     }
 
     # Logs retains
-    $daysOfLogs = $( @($vals['Logs']['System']['DaysOfLogs'], $vals['Logs']['Application']['DaysOfLogs'], $vals['Logs']['Security']['DaysOfLogs']) | Measure-Object -Minimum)
+    $daysOfLogs = $( @($vals['Logs']['System']['DaysOfLogs'], $vals['Logs']['Application']['DaysOfLogs'], $vals['Logs']['Security']['DaysOfLogs']) | Measure-Object -Minimum).Minimum
     $vals['Logs'].Add('DaysOfLogsStored', $daysOfLogs)
 
     # Summary data per day
