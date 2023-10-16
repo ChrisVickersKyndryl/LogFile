@@ -10,7 +10,7 @@ $job = Start-Job -ScriptBlock {
 
     $vals = @{
         Hostname = $env:computername
-        ReportDate = Get-Date
+        ReportDate = (Get-Date).ToUniversalTime().toString("r")
         Logs = @{
             # System
             System = @{
