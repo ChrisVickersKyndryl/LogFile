@@ -37,14 +37,16 @@ $job = Start-Job -ScriptBlock {
         #Drive information
         Drive = @{
             Size = $volume.Size
-            SizeGB = $volume.Size/1GB
+            SizeGB = [math]::Round($volume.Size/1GB,2)
             SpaceRemaining = $volume.SizeRemaining
-            SpaceRemainingGB = $volume.SizeRemaining/1GB
+            SpaceRemainingGB = [math]::Round($volume.SizeRemaining/1GB,2)
         }
     }
-    
+
+    #$logs = @('System', 'Application')
     $logs = @('System', 'Application', 'Security')
     foreach($ind in $logs){
+
         # Set total days
         $vals['Logs'][$ind].Add('DaysOfLogs', (NEW-TIMESPAN –Start $vals['Logs'][$ind]['EarliestLog'] –End (Get-Date)).Days)
 
