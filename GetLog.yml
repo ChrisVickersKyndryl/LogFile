@@ -2,6 +2,7 @@
 - name: Get log file data and return email
   hosts: all
   gather_facts: false
+  ignore_errors: yes
   vars:
     shell_command: "{{ lookup('file', './LogFileSize.ps1') }}"
 
