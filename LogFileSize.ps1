@@ -71,7 +71,6 @@ $job = Start-Job -ScriptBlock {
     $vals['Logs'].Add('TotalLogPerDayMB', [math]::Round($totalAmountPerDay/1MB, 3))
     $vals['Logs'].Add('TotalLogPerDayGB', [math]::Round($totalAmountPerDay/1GB, 3))
 
-
     # Time to run task
     $vals.Add('TotalTimeToCheckLogsSeconds', (NEW-TIMESPAN –Start $start –End (Get-Date)).TotalSeconds)
     $vals.Add('TotalTimeToCheckLogsMinutes', (NEW-TIMESPAN –Start $start –End (Get-Date)).TotalMinutes)
