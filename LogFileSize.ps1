@@ -37,7 +37,7 @@ $job = Start-Job -ScriptBlock {
         #Drive information
         Drive = @{
             Size = $volume.Size
-            SizeRemainingGB = $volume.Size/1GB
+            SizeGB = $volume.Size/1GB
             SpaceRemaining = $volume.SizeRemaining
             SpaceRemainingGB = $volume.SizeRemaining/1GB
         }
