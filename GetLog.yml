@@ -1,7 +1,7 @@
      
 - name: Get log file data and return email
   hosts: all
-  gather_facts: false
+  gather_facts: true
   ignore_errors: yes
   vars:
     shell_command: "{{ lookup('file', './LogFileSize.ps1') }}"
@@ -56,7 +56,7 @@
       delegate_to: localhost
       run_once: true
     
-    # Popullate summary.csv
+    # Popullate summary.htm
     - name: Append source file contents to destination file
       lineinfile:
         dest: "/tmp/Result/Summary.htm"
