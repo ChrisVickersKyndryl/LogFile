@@ -32,9 +32,14 @@
         dest: "/tmp/Result/{{ ansible_hostname }}.txt"
         content: |
           <tr>
-            <td>{{ log_info.Hostname }}</td>
-            <td>{{ log_info.Hostname }}</td>
-            <td>{{ log_info.Hostname }}</td>
+            <td>Ansible Server Name</td>
+            <td>Server Name (In OS)</td>
+            <td>C Drive Space</td>
+            <td>C Drive Space Remaining </td>
+            <td>Log File Size</td>
+            <td>Logs (MB) Per Day</td>
+            <td>Days stored</td>
+            <td>Report Time (seconds)</td>
           </tr>
       when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
       delegate_to: localhost
@@ -74,6 +79,7 @@
     #    to: "{{ destination_email }}"
     #    from: ansible@kyndryl.com
     #    subject: "Ansible - Log report"
+    #    subtype: html
     #    body: |
     #      <html>
     #        <h2>Log file summary</h2>
