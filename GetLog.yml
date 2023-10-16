@@ -36,9 +36,9 @@
             <th>{{ log_info.Hostname }}</th>
             <th>{{ log_info.Drive.SizeGB }}</th>
             <th>{{ log_info.Drive.SpaceRemainingGB }}</th>
-            <th>log_info.Logs.TotalLogPerDayGB</th>
-            <th>log_info.Logs.DaysOfLogsStored</th>
-            <th>log_info.ReportDate</th>
+            <th>{{ log_info.Logs.TotalLogPerDayGB }}</th>
+            <th>{{ log_info.Logs.DaysOfLogsStored }}</th>
+            <th>{{ log_info.ReportDate }}</th>
           </tr>
       when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
       delegate_to: localhost
