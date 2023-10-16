@@ -36,7 +36,6 @@
             <th>{{ log_info.Hostname }}</th>
             <th>{{ log_info.Drive.SizeGB }}</th>
             <th>{{ log_info.Drive.SpaceRemainingGB }}</th>
-            <th></th>
             <th>log_info.Logs.TotalLogPerDayGB</th>
             <th>log_info.Logs.DaysOfLogsStored</th>
             <th>log_info.ReportDate</th>
@@ -93,7 +92,6 @@
     #            <td>Server Name (In OS)</td>
     #            <td>C Drive Size</td>
     #            <td>C Drive Space Remaining </td>
-    #            <td>Log File Size</td>
     #            <td>Logs (MB) Per Day</td>
     #            <td>Days stored</td>
     #            <td>Report Time (seconds)</td>
