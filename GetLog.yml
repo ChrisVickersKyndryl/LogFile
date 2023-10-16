@@ -24,7 +24,7 @@
     # Convert
     - name: Convert JSON to facts
       set_fact:
-        my_fact_name: "{{ shell_output | from_json }}"
+        log_info: "{{ shell_output.stdout | from_json }}"
     
     # Create a temporary file to store the csv information for all servers
     - name: Creating an empty file to store the single summary
@@ -32,9 +32,9 @@
         dest: "/tmp/Result/{{ ansible_hostname }}.txt"
         content: |
           <tr>
-            <td>{{  }}</td>
-            <td>{{  }}</td>
-            <td>{{  }}</td>
+            <td>{{ log_info.Hostname }}</td>
+            <td>{{ log_info.Hostname }}</td>
+            <td>{{ log_info.Hostname }}</td>
           </tr>
       when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
       delegate_to: localhost
