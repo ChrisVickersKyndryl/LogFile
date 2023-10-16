@@ -55,17 +55,30 @@ $job = Start-Job -ScriptBlock {
 
         # Data per day
         $dataPerDay = ($vals['Logs'][$ind]['LogSize']/ $vals['Logs'][$ind]['DaysOfLogs'])
+        $vals['Logs'][$ind].Add('LogSizePerDayBytes', $dataPerDay)
         $vals['Logs'][$ind].Add('LogSizePerDayMB', [math]::Round($dataPerDay/1MB, 3))
         $vals['Logs'][$ind].Add('LogSizePerDayGB',[math]::Round($dataPerDay/1GB, 3))
     }
 
+    # Logs retains
+    $daysOfLogs = $( @($vals['Logs']['System']['DaysOfLogs'], $vals['Logs']['Application']['DaysOfLogs'], $vals['Logs']['Security']['DaysOfLogs']) | Measure-Object -Minimum)
+    $vals['Logs'].Add('DaysOfLogsStored', $daysOfLogs)
+
+    # Summary data per day
+    $totalAmountPerDay = $vals['Logs']['System']['LogSizePerDayBytes'] + $vals['Logs']['Application']['LogSizePerDayBytes'] + $vals['Logs']['Security']['LogSizePerDayBytes']
+    $vals['Logs'].Add('TotalLogPerDayBytes', $totalAmountPerDay)
+    $vals['Logs'].Add('TotalLogPerDayMB', [math]::Round($totalAmountPerDay/1MB, 3))
+    $vals['Logs'].Add('TotalLogPerDayGB', [math]::Round($totalAmountPerDay/1GB, 3))
+
+
+    # Time to run task
     $vals.Add('TotalTimeToCheckLogsSeconds', (NEW-TIMESPAN –Start $start –End (Get-Date)).TotalSeconds)
     $vals.Add('TotalTimeToCheckLogsMinutes', (NEW-TIMESPAN –Start $start –End (Get-Date)).TotalMinutes)
 
     $vals | ConvertTo-Json
 }
 
-# Wait for the job to complete with a timeout. Timeout is in seconds
+# Wait for the job to complete with a timeout. Timeout is in seconds. Currently set to 7200 (2 hours)
 if (Wait-Job -Job $job -Timeout 7200) {
     # The job completed within the specified timeout
     Receive-Job $job
