@@ -17,7 +17,7 @@
   
     # Get server log info
     - name: Get server log into
-      win_shell: {{ shell_command }}
+      win_shell: "{{ shell_command }}"
       register: shell_output
     
     # Convert
