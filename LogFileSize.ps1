@@ -42,11 +42,9 @@ $job = Start-Job -ScriptBlock {
             SpaceRemainingGB = $volume.SizeRemaining/1GB
         }
     }
-
-    #$logs = @('System', 'Application')
+    
     $logs = @('System', 'Application', 'Security')
     foreach($ind in $logs){
-
         # Set total days
         $vals['Logs'][$ind].Add('DaysOfLogs', (NEW-TIMESPAN –Start $vals['Logs'][$ind]['EarliestLog'] –End (Get-Date)).Days)
 
@@ -72,8 +70,8 @@ $job = Start-Job -ScriptBlock {
     $vals['Logs'].Add('TotalLogPerDayGB', [math]::Round($totalAmountPerDay/1GB, 3))
 
     # Time to run task
-    $vals.Add('TotalTimeToCheckLogsSeconds', (NEW-TIMESPAN –Start $start –End (Get-Date)).TotalSeconds)
-    $vals.Add('TotalTimeToCheckLogsMinutes', (NEW-TIMESPAN –Start $start –End (Get-Date)).TotalMinutes)
+    $vals.Add('TotalTimeToCheckLogsSeconds', [math]::Round((NEW-TIMESPAN –Start $start –End (Get-Date)).TotalSeconds))
+    $vals.Add('TotalTimeToCheckLogsMinutes', [math]::Round((NEW-TIMESPAN –Start $start –End (Get-Date)).TotalMinutes))
 
     $vals | ConvertTo-Json
 }
