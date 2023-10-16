@@ -29,7 +29,7 @@
     # Create a temporary file to store the csv information for all servers
     - name: Creating an empty file to store the single summary
       copy:
-        dest: "/tmp/Result/{{ ansible_hostname }}.txt"
+        dest: "/tmp/Result/{{ ansible_hostname }}.json"
         content: |
           <tr>
             <th>{{ ansible_hostname }}</th>
@@ -47,7 +47,7 @@
     - name: Find all text files
       find:
         paths: "/tmp/Result/"
-        patterns: "*.txt"
+        patterns: "*.json"
       register: text_files
       run_once: true
       delegate_to: localhost
