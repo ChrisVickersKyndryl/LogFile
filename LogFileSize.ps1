@@ -43,7 +43,7 @@ $job = Start-Job -ScriptBlock {
         }
     }
 
-    #$logs = @('System', 'Application')
+    # Get logs data from each system
     $logs = @('System', 'Application', 'Security')
     foreach($ind in $logs){
 
