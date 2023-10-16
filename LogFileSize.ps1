@@ -37,7 +37,7 @@ $job = Start-Job -ScriptBlock {
         #Drive information
         Drive = @{
             Size = $volume.Size
-            SizeRemaining = $volume.Size/1GB
+            SizeRemainingGB = $volume.Size/1GB
             SpaceRemaining = $volume.SizeRemaining
             SpaceRemainingGB = $volume.SizeRemaining/1GB
         }
@@ -55,7 +55,7 @@ $job = Start-Job -ScriptBlock {
         $vals['Logs'][$ind].Add('LogSizeGB', [math]::Round($vals['Logs'][$ind]['LogSize']/1GB,3))
 
         # Data per day
-        $dataPerDay = ($vals['Logs'][$ind]['LogSize']/ $vals['Logs'][$ind]['DaysOfLogs'])
+        $dataPerDay = [math]::Round($vals['Logs'][$ind]['LogSize']/ $vals['Logs'][$ind]['DaysOfLogs'])
         $vals['Logs'][$ind].Add('LogSizePerDayBytes', $dataPerDay)
         $vals['Logs'][$ind].Add('LogSizePerDayMB', [math]::Round($dataPerDay/1MB, 3))
         $vals['Logs'][$ind].Add('LogSizePerDayGB',[math]::Round($dataPerDay/1GB, 3))
