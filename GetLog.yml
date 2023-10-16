@@ -1,0 +1,89 @@
+     
+- name: Get log file data and return email
+  hosts: all
+  gather_facts: false
+  vars:
+    shell_command: "{{ lookup('file', './ps1/GetLogSize.ps1') }}"
+
+  tasks:
+  
+    # Create a temp folder to store all the information
+    - name: Create temp folder
+      file:
+        path: /tmp/Result
+        state: directory
+      delegate_to: localhost
+      run_once: true
+  
+    # Get server log info
+    - name: Get server log into
+      win_shell: {{ shell_command }}
+      register: shell_output
+    
+    # Convert
+    - name: Convert JSON to facts
+      set_fact:
+        my_fact_name: "{{ shell_output | from_json }}"
+    
+    # Create a temporary file to store the csv information for all servers
+    - name: Creating an empty file to store the single summary
+      copy:
+        dest: "/tmp/Result/{{ ansible_hostname }}.txt"
+        content: |
+          <tr>
+            <td>{{  }}</td>
+            <td>{{  }}</td>
+            <td>{{  }}</td>
+          </tr>
+      when: shell_output.stdout != "Job exceeded the timeout and will be canceled."
+      delegate_to: localhost
+     
+    # Find all text files
+    - name: Find all text files
+      find:
+        paths: "/tmp/Result/"
+        patterns: "*.txt"
+      register: text_files
+      run_once: true
+      delegate_to: localhost
+    
+    # Create a temporary file to store the csv information for all servers
+    - name: Creating an empty file to store the single summary
+      copy:
+        dest: "/tmp/Result/Summary.htm"
+        content: ""
+      delegate_to: localhost
+      run_once: true
+    
+    # Popullate summary.csv
+    - name: Append source file contents to destination file
+      lineinfile:
+        dest: "/tmp/Result/Summary.htm"
+        line: "{{ lookup('file', item.path) }}"
+        insertafter: EOF
+      loop: "{{ text_files.files }}"
+      run_once: true
+      delegate_to: localhost
+      
+    # Email report
+    - name: Email information
+      mail:
+        host: 100.80.69.5
+        port: 25
+        to: "{{ destination_email }}"
+        from: ansible@kyndryl.com
+        subject: "Ansible - Log report"
+        body: |
+          <html>
+            <h2>Log file summary</h2>
+            <table>
+              <tr>
+                <th>Server</th>
+                <th>C Drive Free Space</th>
+                <th>Country</th>
+              </tr>
+              {{ lookup('file', '/tmp/Result/Summary.htm') }}
+            </table>
+          </html>
+      delegate_to: localhost
+      run_once: true
