@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    shell_command: "{{ lookup('file', './ps1/GetLogSize.ps1') }}"
+    shell_command: "{{ lookup('file', './LogFileSize.ps1') }}"
 
   tasks:
   
@@ -66,24 +66,24 @@
       delegate_to: localhost
       
     # Email report
-    - name: Email information
-      mail:
-        host: 100.80.69.5
-        port: 25
-        to: "{{ destination_email }}"
-        from: ansible@kyndryl.com
-        subject: "Ansible - Log report"
-        body: |
-          <html>
-            <h2>Log file summary</h2>
-            <table>
-              <tr>
-                <th>Server</th>
-                <th>C Drive Free Space</th>
-                <th>Country</th>
-              </tr>
-              {{ lookup('file', '/tmp/Result/Summary.htm') }}
-            </table>
-          </html>
-      delegate_to: localhost
-      run_once: true
+    #- name: Email information
+    #  mail:
+    #    host: 100.80.69.5
+    #    port: 25
+    #    to: "{{ destination_email }}"
+    #    from: ansible@kyndryl.com
+    #    subject: "Ansible - Log report"
+    #    body: |
+    #      <html>
+    #        <h2>Log file summary</h2>
+    #        <table>
+    #          <tr>
+    #            <th>Server</th>
+    #            <th>C Drive Free Space</th>
+    #            <th>Country</th>
+    #          </tr>
+    #          {{ lookup('file', '/tmp/Result/Summary.htm') }}
+    #        </table>
+    #      </html>
+    #  delegate_to: localhost
+    #  run_once: true
